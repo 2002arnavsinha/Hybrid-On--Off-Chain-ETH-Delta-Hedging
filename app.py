@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 # ==============================================================================
 # CONFIG
@@ -150,7 +150,7 @@ with col3:
 
 with col4:
     st.metric(
-        "ETH Oracle Price", 
+        "BTC Oracle Price", 
         f"${latest['btc_price']:,.2f}",
         delta=f"${latest['btc_price'] - display_df['btc_price'].iloc[-2]:+.2f}" if len(display_df) > 1 else None
     )
@@ -180,7 +180,7 @@ fig = make_subplots(
     subplot_titles=(
         "PnL Evolution", "Hedge Ratio Adjustments",
         "SM Delta (95% CI)", "Volatility Smile Slope",
-        "ETH Price Oracle", "Volatility Surface"
+        "BTC Price Oracle", "Volatility Surface"
     ),
     vertical_spacing=0.12,
     horizontal_spacing=0.1,
@@ -297,7 +297,7 @@ fig.add_trace(
         x=x_vals,
         y=display_df['btc_price'],
         mode='lines+markers',
-        name='ETH Price',
+        name='BTC Price',
         line=dict(color='#FFA15A', width=3),
         marker=dict(size=6),
         hovertemplate='Time: %{text}<br>Price: $%{y:,.2f}<extra></extra>',
@@ -355,14 +355,14 @@ display_table = display_df[[
 ]].copy()
 
 display_table.columns = [
-    'Time', 'ETH Price', 'SM Delta', 
+    'Time', 'BTC Price', 'SM Delta', 
     'Slope μ', 'Slope σ', 'Hedge Ratio', 'Volatility', 'PnL'
 ]
 
 # Style the dataframe
 st.dataframe(
     display_table.tail(20).style.format({
-        'ETH Price': '${:,.2f}',
+        'BTC Price': '${:,.2f}',
         'SM Delta': '{:.4f}',
         'Slope μ': '{:.6f}',
         'Slope σ': '{:.6f}',
